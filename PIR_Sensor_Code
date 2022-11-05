@@ -1,0 +1,25 @@
+#Obligatory import statements
+
+from machine import Pin
+
+from time import sleep
+
+import sys
+
+#creating led and sensor parameters
+
+led = Pin(0,Pin.OUT)
+
+PIR_Sensor = Pin(1, Pin.IN)
+
+#main loop that makes the sensor function as it works
+while True:
+    if PIR_Sensor.value()==0:
+        print("human not detected")
+        led.value(0)
+        sleep(0.05)
+    else:
+        print("human detected")
+        led.value(1)
+        sleep(0.05)
+        #print("Hooman detected") 
