@@ -9,3 +9,5 @@ that is not covered in the book that is provided. In my code, I am playing aroun
 in order to try and create a program that will read more data
 
 More data = more better
+
+Currently, the bare bones code seems to do the job, so I am going to try and minimize the delay in the sensor
