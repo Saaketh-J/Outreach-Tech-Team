@@ -6,6 +6,7 @@ import utime
 import time
 import sys
  
+# NOTES - THE LIGHT INTENSITY LEVEL IS ADJUSTED BY THE SCREW ON THE BLUE BOX OF THE SENSOR
  
 #establishing/displaying sytem information
 print("System info: ")
