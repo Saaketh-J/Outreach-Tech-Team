@@ -12,7 +12,9 @@ count = 0
 while True:
     sound_level = round(sound_map(sound_sensor.read_u16(), 0, 65535, 0, 1000))
     if sound_level:
-        print("Sound Level: ", sound_level)
+        # print("Sound Level: ", sound_level)
+        # so 800 would be 80% loudness, tested dropping a water bottle near the sensor
+        # gets you to around 825 ~ 830
         if sound_level > 200:
             print("Detect Noise! Sound level is: ", sound_level)
             print("Count: ", count, "\n")
