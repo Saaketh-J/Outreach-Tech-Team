@@ -45,17 +45,25 @@ while True:
     file.close()
     
     if PIR_Sensor.value()==0:
-        print("human not detected and the ambient temp is " + str(temp) + " degrees Celsius.")
-        #file.write("human not detected and the ambient temp is " + str(temp))
         led.value(0)
-        sleep(0.05)
+        print("human not detected and the ambient temp is " + str(temp) + " degrees Celsius.")
+        file = open ("sensorvalues.txt", "w")
+        file.write("human not detected and the ambient temp is " + str(temp))
+        file.close()
+        
+        #sleep(0.01)
     else:
-        print("human detected and the temperature is " + str(read) + "degrees celsius.")
         led.value(1)
-        sleep(0.05)
+        print("human detected and the temperature is " + str(temp) + " degrees celsius.")
+        file = open ("sensorvalues.txt", "w")
+        file.write("human detected and the ambient temp is " + str(temp))
+        file.close()
+        
+        #sleep(0.01)
         
 #file.close()
 
 #if you wish to write out data lingering in program to the actual file, use:
 #file.flush()
+
 
