@@ -34,30 +34,33 @@ conversionFactor = 3.3/ (65535)
 read = sensorTemp.read_u16() * conversionFactor
 temp = 27 - (read - 0.706)/0.001721
 
+#creating counter for number of times it has detected activity
+# count = int()
 
-
-#continuous run loop
+#continuous run loop that is the main program
 led.value(0)
 while True:
     file = open ("sesnsordata.txt", "w")
     file.read()
     file.write(timestring + ", temp: " + str(temp) + ' C ' + "\n")
     file.close()
+    #print("Times activity detected: " + str(count))
     
     if PIR_Sensor.value()==0:
         led.value(0)
-        print("human not detected and the ambient temp is " + str(temp) + " degrees Celsius.")
-        file = open ("sensorvalues.txt", "w")
-        file.write("human not detected and the ambient temp is " + str(temp))
-        file.close()
+        print("No activity detected.")
+
         
         #sleep(0.01)
     else:
         led.value(1)
-        print("human detected and the temperature is " + str(temp) + " degrees celsius.")
+        print("human detected and the temperature is " + str(temp) + "degrees celsius.")
         file = open ("sensorvalues.txt", "w")
-        file.write("human detected and the ambient temp is " + str(temp))
+        file.write("human detected and the ambient temp is " + str(temp) + " at " + str(timestring))
         file.close()
+        #count++
+        
+        
         
         #sleep(0.01)
         
