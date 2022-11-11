@@ -8,7 +8,7 @@ from dht import DHT11, InvalidChecksum
 # Connect the Pico's GP1 to ht11 sensor's DAT pin.
 # Connect the Pico's 3.3V Pin to ht11 sensor's VCC pin.
 # Connect the Pico's GND pin to ht11 sensor's GND pin.
-dhtPIN = 1
+dhtPIN = 3
 dhtSensor = DHT11(Pin(dhtPIN, Pin.OUT, Pin.PULL_DOWN))
 
 # Print the temperature followed by the humidity
