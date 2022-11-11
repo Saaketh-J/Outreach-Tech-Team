@@ -30,7 +30,7 @@ def sound_map(read_value, in_min, in_max, out_min, out_max):
     return (read_value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 count = 0
-while (True):
+while (count < 51):
     #print(sound_sensor.read_u16()) # prints the adc values
     # print(sound_sensor.read_u16() * 3.3 / 65536) # prints the voltage
     sound_level = round(sound_map(sound_sensor.read_u16(), 0, 65535, 0, 1000))
@@ -42,7 +42,8 @@ while (True):
         # a lightly louder than normal speaking voice and dropping a waterbottle onto wood right next
         # to the sensor both trigger this, and both result in the same voltage and sound_level
         # so basically this can detect a sudden loudness in a quiet room
-        if sound_level < 40:
+        if sound_level < 820:
+            print(sound_sensor.read_u16())
             print(sound_sensor.read_u16() * 3.3 / 65536) # prints the voltage
             print("Detect Noise! Sound level is: ", sound_level)
             print("Count: ", count, "\n")
@@ -50,4 +51,4 @@ while (True):
             count += 1
         else:
             led.value(0)
-        sleep(0.5)
+        sleep(0.1)
