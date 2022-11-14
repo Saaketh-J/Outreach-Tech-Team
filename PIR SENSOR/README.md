@@ -4,6 +4,6 @@ Using GP0 to switch my LED ligth on and off. I then utilized GP1 to to connect t
 
 I also drew power from the 3V3 outlet on the breadboard kit. Ground was simply grounded on the breadboard kit as well.
 
-The purpose of this sensor is to detect motion in a visual way without creating any security issues with the client. It works by detecting any change in the 
+Make sure that the jumper is set to the repeatable trigger set. This ensures that the sensor is able to capture a continuous stream of data to enable
 
-sensor from either side of the semisphere that houses the sensors.
+recognition of what is to be considered a registered movement versus an accidental trigger.
