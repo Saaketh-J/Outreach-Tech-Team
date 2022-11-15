@@ -1,9 +1,17 @@
 This folder contains the code utilized in order to work and capture PIR sensor data.
 
-Using GP0 to switch my LED ligth on and off. I then utilized GP1 to to connect to me OUT pin on the PIR sensor.
+Using GP0 to switch my LED ligth on and off.
 
-I also drew power from the 3V3 outlet on the breadboard kit. Ground was simply grounded on the breadboard kit as well.
+Connect GP1 to the OUT pin on the PIR sensor.
 
-Make sure that the jumper is set to the repeatable trigger set. This ensures that the sensor is able to capture a continuous stream of data to enable
+Connect 3V3 pin to the OUT pin on the PIR sensor.
 
-recognition of what is to be considered a registered movement versus an accidental trigger.
+Connect the GND pin to the GND pin on the sensor.
+
+Set the jumper to the repeatable trigger set.
+
+Adjust the pots so that it has low delay and relatively high sensitivity.
+
+The text files will be automatically created in the program, no need to create the text files.
+
+pir_sensor.py is the program that is being utliized
