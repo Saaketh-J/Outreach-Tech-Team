@@ -1,3 +1,8 @@
+#This program is designed to read and capture movement data from the PIR sensor provided in the raspberry pi kit utilized.
+
+
+
+
 #import statements
 import rp2
 from machine import Pin
@@ -12,7 +17,7 @@ print (str(sys.implementation))
 print()
 print()
 
-#displaying and setting the time
+#displaying and setting the time only once to the console
 print("System time: ")
 rtc = machine.RTC()
 timestamp = rtc.datetime()
@@ -41,6 +46,11 @@ temp = 27 - (read - 0.706)/0.001721
 led.value(0)
 count = 0
 while True:
+    #Having this statement in the while loop provides a more accurate timestamp to save
+    rtc = machine.RTC()
+    timestamp = rtc.datetime()
+    timestring="%04d-%02d-%02d %02d:%02d:%02d"%(timestamp[0:3] + timestamp[4:7])
+    
     file = open ("sesnsordata.txt", "w")
     file.read()
     file.write(timestring + ", temp: " + str(temp) + ' C ' + "\n")
@@ -71,24 +81,12 @@ while True:
         file.close()
         count +=1
         print(count)
-        
-        
-        
-            
-        
 
-        
-        #count++
-        
-        
-        
-        #sleep(0.01)
         
 #file.close()
 
 #if you wish to write out data lingering in program to the actual file, use:
 #file.flush()
-
 
 
 
