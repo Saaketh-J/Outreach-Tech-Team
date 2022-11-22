@@ -1,4 +1,4 @@
-#    Sensor     Volts   Current GP  Suggested
+     Sensor     Volts   Current GP  Suggested
 1    DHT11      3.3     1           GP15
 
 2    Light      5       27          GP27
