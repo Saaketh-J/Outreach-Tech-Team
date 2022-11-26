@@ -60,33 +60,53 @@ dhtSensor = DHT11(Pin(dhtPIN, Pin.OUT, Pin.PULL_DOWN))
 
 
 # # Experiment 2: Determine if a shower has been running on for too long -> indicates a potential fall or other issue
-# ShowerStartTime = 0
-# # semaphore to block checking for start time after a shower's been started
-# showerStarted = False
-# # dummy avg_temp and avg_hum
-# avg_temp = 28
-# avg_hum = 5100
-# humidity_threshold = 1000
-# while True:
-#     temp = dhtSensor.temperature
-#     hum = dhtSensor.humidity
+ShowerStartTime = 0
+# semaphore to block checking for start time after a shower's been started
+showerStarted = False
+# example avg_temp and avg_hum
+total_temp = 0
+total_hum = 0
+count = 0
+humidity_threshold = 1000
+while True:
+    temp = dhtSensor.temperature
+    hum = dhtSensor.humidity
 
-#     # if the shower has been started, get the initial time
-#     if not showerStarted and hum-avg_hum > humidity_threshold:
-#         ShowerStartTime = time.ticks_ms()
-#         ShowerStarted = True
+    # calculate the average temparature and humidity for a neutral bathroom
+    # stop calculating average if shower has started
+    if not showerStarted:
+        total_hum += hum
+        total_temp += temp
+        count += 1
+        avg_hum = total_hum/count
+        avg_temp = total_temp/count
 
-#     # if it has been more than hour after the start and the bathroom is still very humid, indicates an issue
-#     minutes = 60
-#     if showerStarted and time.ticks_diff(
-#             time.ticks_ms(), ShowerStartTime)/60000 >= minutes:
-#         if hum - avg_hum > humidity_threshold:
-#             print(f'ALERT: Shower has been running for {minutes} minutes')
-#         else:
-#             showerStarted = False
+    # if the shower has been started, get the initial time
+    if not showerStarted and hum-avg_hum > humidity_threshold:
+        ShowerStartTime = time.ticks_ms()
+        ShowerStarted = True
 
-#     # Can also keep track of how long showers are
-#     if showerStarted and hum-avg_hum < humidity_threshold:
-#         minutes = time.ticks_diff(
-#             time.ticks_ms(), ShowerStartTime)/60000
-#         print(f'Shower ended: lasted {minutes} minutes')
+    # if it has been more than hour after the start and the bathroom is still very humid, indicates an issue
+    minutes = 60
+    runtime = time.ticks_diff(
+        time.ticks_ms(), ShowerStartTime)/60000
+    if showerStarted and runtime >= minutes:
+        if hum - avg_hum > humidity_threshold:
+            print(f'ALERT: Shower has been running for {runtime} minutes')
+        else:
+            print(f'Shower ended: lasted {minutes} minutes')
+            showerStarted = False
+
+    # Can also keep track of how long showers are, if it ends before 60 minutes
+    if showerStarted and hum-avg_hum < humidity_threshold:
+        print(f'Shower ended: lasted {runtime} minutes')
+        showerStarted = False
+
+    # if it's been a week of data collection, save to log file and reset
+    if count == 604800:
+        file = open("humiditydata.txt", "w")
+        file.read()
+        file.write(timestring + ", temp: " + str(total_temp/count) +
+                   ", " + "humidity: " + str(total_hum/count))
+        file.close()
+        total_temp = total_hum = count = 0
