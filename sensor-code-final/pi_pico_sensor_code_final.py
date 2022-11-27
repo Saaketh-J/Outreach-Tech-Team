@@ -1,5 +1,6 @@
 import machine
 from machine import Pin, ADC
+import rp2
 import utime
 import time
 from time import sleep
@@ -23,8 +24,25 @@ timestamp = rtc.datetime()
 timestring = "%04d-%02d-%02d %02d:%02d:%02d" % (
     timestamp[0:3] + timestamp[4:7])
 
+#establishing Temperature reading and conversion to degrees C for PIR sensor readings
+sensorTemp = machine.ADC(machine.ADC.CORE_TEMP)
+conversionFactor = 3.3/ (65535)
+read = sensorTemp.read_u16() * conversionFactor
+temp = 27 - (read - 0.706)/0.001721
+
 print('Date and Time = ' + timestring)
 
+#LED FOR PIR SENSOR
+pirled = Pin(0,Pin.OUT)
+#ASSIGNING PIR SENSOR PIN
+pirsensor= Pin(3,Pin.IN)
+#setting led to default to off in case of program break
+pirled.value(0)
+#creating text file to hold PIR sensor data readings
+file = open ("PIRdata.txt", "w")
+file.read()
+file.write(timestring + ", temp: " + str(temp) + ' C ' + "\n")
+file.close()
 
 #led = Pin(0, Pin.OUT)
 led = machine.Pin("LED", machine.Pin.OUT)
@@ -35,7 +53,7 @@ photo_sensor = ADC(1)
 tilt_sensor = Pin(4, Pin.IN)
 dhtSensor = DHT11(Pin(15, Pin.OUT, Pin.PULL_DOWN))
 
-
+pircount=0
 count = 0
 
 # tilt variables
@@ -53,6 +71,31 @@ count = 0
 humidity_threshold = 1000
 
 while True:
+    
+    #Having the time refreshing constantly while the program is running for more accurate timestamps
+    rtc = machine.RTC()
+    timestamp = rtc.datetime()
+    timestring="%04d-%02d-%02d %02d:%02d:%02d"%(timestamp[0:3] + timestamp[4:7])
+    
+    #PIR sensor code
+    if PIRcount >=40:#20 is an arbritrary number that will be adjusted upon further tweaking
+        pirled.value(1)
+        print("Real interaction detected")
+        file = open ("count.txt", "a")
+        file.write("human detected. Temperature is " + str(temp) + " C° at " + str(timestring) + "\n" )
+        file.close()
+        PIRcount = 0
+    if pirsensor.value()==0:
+        pirled.value(0)
+    else
+        pirled.value(1)
+        file = open ("PIRdata.txt", "a")
+        file.write("human detected and the ambient temp is " + str(temp) + " at " + str(timestring) + "\n")
+        file.close()
+        PIRcount +=1
+        led.value(0)
+        
+    
     # light code
     while (count < 51):
         print(photo_sensor.read_u16())
