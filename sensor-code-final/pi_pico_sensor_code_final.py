@@ -40,8 +40,6 @@ pirsensor= Pin(3,Pin.IN)
 pirled.value(0)
 #creating text file to hold PIR sensor data readings
 file = open ("PIRdata.txt", "w")
-file.read()
-file.write(timestring + ", temp: " + str(temp) + ' C ' + "\n")
 file.close()
 
 #led = Pin(0, Pin.OUT)
@@ -53,7 +51,9 @@ photo_sensor = ADC(1)
 tilt_sensor = Pin(4, Pin.IN)
 dhtSensor = DHT11(Pin(15, Pin.OUT, Pin.PULL_DOWN))
 
+#counter for PIR sensor
 pircount=0
+
 count = 0
 
 # tilt variables
@@ -78,22 +78,26 @@ while True:
     timestring="%04d-%02d-%02d %02d:%02d:%02d"%(timestamp[0:3] + timestamp[4:7])
     
     #PIR sensor code
-    if PIRcount >=40:#20 is an arbritrary number that will be adjusted upon further tweaking
+#40 is an arbritrary number that can be changed to adjust the duration of movement that constitutes a real movement   
+    if PIRcount >=40:
         pirled.value(1)
         print("Real interaction detected")
+        #This will write down the timestamp and temp for the interaction and store it in the text doc
         file = open ("count.txt", "a")
         file.write("human detected. Temperature is " + str(temp) + " C° at " + str(timestring) + "\n" )
         file.close()
         PIRcount = 0
+    #For when no movement is detected
     if pirsensor.value()==0:
         pirled.value(0)
+        PIRcount = 0
     else
         pirled.value(1)
         file = open ("PIRdata.txt", "a")
         file.write("human detected and the ambient temp is " + str(temp) + " at " + str(timestring) + "\n")
         file.close()
         PIRcount +=1
-        led.value(0)
+        pirled.value(0)
         
     
     # light code
