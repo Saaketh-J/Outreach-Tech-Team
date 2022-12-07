@@ -1,4 +1,4 @@
-This is the readme.md fioe
+This is the readme.md file
 
 we should use this file to let each other know what pins we are assigning in our code in order to ensure we are not using the 
 
